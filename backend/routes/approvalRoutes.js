@@ -9,13 +9,13 @@ const TRANSITIONS = {
   'HOD Approval':   { to: 'Approved',       roles: ['hod'] },
 };
 
-const REJECT_FROM = ['Faculty Review', 'HOD Approval'];
+const REJECT_FROM = ['Submitted', 'Faculty Review', 'HOD Approval'];
 
 router.post('/:id/transition', verifyToken, async (req, res) => {
   const { id } = req.params;
   const { action, comment } = req.body;
 
-  if (!comment) return res.status(400).json({ error: 'Comment is required for all transitions' });
+  if (!comment) return res.status(400).json({ error: 'Comment is required' });
 
   const { data: submission, error } = await supabase
     .from('submissions')
@@ -30,7 +30,7 @@ router.post('/:id/transition', verifyToken, async (req, res) => {
   if (action === 'approve') {
     const allowed = TRANSITIONS[submission.state];
     if (!allowed) return res.status(400).json({ error: 'Cannot approve from current state' });
-    if (!allowed.roles.includes(req.user.role)) return res.status(403).json({ error: 'Not authorized for this transition' });
+    if (!allowed.roles.includes(req.user.role)) return res.status(403).json({ error: 'Not authorized' });
     newState = allowed.to;
   } else if (action === 'reject') {
     if (!REJECT_FROM.includes(submission.state)) return res.status(400).json({ error: 'Cannot reject from current state' });

@@ -32,10 +32,16 @@ export default function SubmissionCard({ submission, canReview, onUpdate }) {
       <div style={{display:'flex', alignItems:'flex-start', justifyContent:'space-between'}}>
         <div style={{flex:1, minWidth:0, marginRight:16}}>
           <h3 style={{color:'#E3D5BB', fontSize:13, fontWeight:400, letterSpacing:'0.02em', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis'}}>{submission.title}</h3>
-          <div style={{display:'flex', alignItems:'center', gap:12, marginTop:4}}>
+          <div style={{display:'flex', alignItems:'center', gap:12, marginTop:4, flexWrap:'wrap'}}>
             <span style={{color:'#4a4a3a', fontSize:11}}>{submission.category}</span>
             {submission.users && <span style={{color:'#4a4a3a', fontSize:11}}>· {submission.users.full_name}</span>}
             <span style={{color:'#2a2a1a', fontSize:11}}>· {new Date(submission.created_at).toLocaleDateString()}</span>
+            {submission.file_url && (
+              <a href={submission.file_url} target="_blank" rel="noopener noreferrer"
+                style={{color:'#C8AA6F', fontSize:10, background:'rgba(160,127,58,0.1)', border:'1px solid rgba(160,127,58,0.25)', padding:'2px 8px', borderRadius:4, textDecoration:'none', cursor:'pointer'}}>
+                📎 View Document
+              </a>
+            )}
           </div>
         </div>
         <span style={{background:style.bg, color:style.color, border:`1px solid ${style.border}`, padding:'4px 10px', borderRadius:4, fontSize:10, fontWeight:500, letterSpacing:'0.06em', flexShrink:0}}>
@@ -53,7 +59,7 @@ export default function SubmissionCard({ submission, canReview, onUpdate }) {
           ) : (
             <div>
               <textarea
-                style={{background:'#111111', border:'1px solid rgba(200,170,111,0.1)', color:'#E3D5BB', borderRadius:6, padding:'9px 12px', width:'100%', fontSize:11, outline:'none', resize:'none', marginBottom:8, fontStyle:'italic', color:'#6a5a3a'}}
+                style={{background:'#111111', border:'1px solid rgba(200,170,111,0.1)', borderRadius:6, padding:'9px 12px', width:'100%', fontSize:11, outline:'none', resize:'none', marginBottom:8, color:'#6a5a3a'}}
                 placeholder="Add your review comment..." rows={2}
                 value={comment} onChange={e => setComment(e.target.value)}
               />
