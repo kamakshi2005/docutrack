@@ -10,7 +10,7 @@ const notificationRoutes = require('./routes/notificationRoutes');
 const app = express();
 
 app.use(cors({ 
-  origin: ['http://localhost:5173', 'https://docutrack-ui.vercel.app', /\.vercel\.app$/],
+  origin: ['http://localhost:5173', 'https://docutrack-ui.vercel.app'],
   credentials: true 
 }));
 app.use(express.json());
